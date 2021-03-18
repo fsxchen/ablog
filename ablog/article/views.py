@@ -29,9 +29,8 @@ def list(page=1):
 
 @blueprint.route("/detail/<id>", methods=["GET", "POST"])
 def detail(id):
-    print(id)
-    article = Article.query.filter(id == id).first()
-    next_a = Article.query.filter(id >= id).first()
+    article = Article.query.filter_by(id = int(id)).first()
+    next_a = Article.query.filter(id > id).first()
     return render_template("article/detail.html", article=article, next=next_a)
 
 

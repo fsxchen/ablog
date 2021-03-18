@@ -26,6 +26,9 @@ from ablog.decorators import login_required, pagination
 
 blueprint = Blueprint("article_api", __name__, url_prefix="/api/v1")
 
+extensions=['markdown.extensions.fenced_code',
+    'markdown.extensions.tables']
+
 
 @blueprint.route('/article', methods=['GET'])
 @pagination
@@ -49,7 +52,7 @@ def create_article():
         article = Article.query.filter_by(id=data['id']).first()
         if data.get('content_md'):
             article.content_md = data['content_md']
-            article.content = markdown.markdown(data.get('content_md'))
+            article.content = markdown.markdown(data.get('content_md'), extensions=extensions)
         else:
             article.content = data['content']
         article.title = data['title']
@@ -63,7 +66,7 @@ def create_article():
         article.title = data['title']
         if data.get('content_md'):
             article.content_md = data['content_md']
-            article.content = markdown.markdown(data.get('content_md'))
+            article.content = markdown.markdown(data.get('content_md'), extensions=extensions)
         else:
             article.content = data['content']
         article.user_id = g.user.id
